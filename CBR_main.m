@@ -1,10 +1,12 @@
-function [  ] = CBR_main( )
+function [ avg_f1 ] = CBR_main( )
 % CBR_MAIN - Performs 10-fold cross-validation on a Case Based Resoning
 %            system and outputs the results
 
     % Loads and transforms the examples from cleandata_students.txt
 	[examples, targets]  = loaddata('cleandata_students.txt');
+    fclose('all');
     results = zeros(size(targets));
+    match_stats = cell(size(targets,1),1); 
     
     % Do 10 fold cross evaluation...
     folds = 10;
@@ -44,12 +46,30 @@ function [  ] = CBR_main( )
         
         % Add the results to the result vector
         output_targets(current_num:(end_fold - 1)) = test_targets;
-        results(current_num:(end_fold - 1)) = fold_res;
+        index = 1;
+        for j = current_num:(end_fold - 1)
+           results(j) = fold_res{index}.label;
+           match_stats{j}.label = fold_res{index}.label;
+           match_stats{j}.matches = fold_res{index}.matches;
+           match_stats{j}.percentage = fold_res{index}.percentage;
+           match_stats{j}.result = test_targets(index);
+           index = index + 1;
+        end
+        %results(current_num:(end_fold - 1)) = fold_res;
         current_num = end_fold;
         
     end
     
+%    for i = 1:size(match_stats,1)
+%        if ~(match_stats{i}.label == match_stats{i}.result)
+%            fprintf('PC: %f ',match_stats{i}.matches)
+%            fprintf('PC2: %f, correct result is %d ', ...
+%                match_stats{i}.percentage, ...
+%                match_stats{i}.result)
+%            fprintf('Predicted: %d\n', match_stats{i}.label)
+%        end
+%    end
     disp('CBR System Results:')
-    evaluate_results(results,output_targets);
+    [~,~,avg_f1] = evaluate_results(results,output_targets);
 
 end
