@@ -6,7 +6,7 @@ function [ results ] = testCBR( trained_cbr,test_set )
         new_case = CBR_get_case(test_set(i,:),0);
         similar_case = retrieve(trained_cbr,new_case);
         solved_case = reuse(similar_case,new_case);
-        trained_cbr = retain(trained_cbr,solved_case);
+        trained_cbr = retain(trained_cbr,solved_case,0);
         results(i) = solved_case.label;
     end
 
