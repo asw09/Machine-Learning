@@ -11,6 +11,7 @@ function [ new_case ] = CBR_get_case( au_vector,label )
     
     new_case.active_aus = vector;
     new_case.label = label;
+    new_case.typicality = 1;
 
 end
 

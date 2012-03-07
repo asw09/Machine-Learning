@@ -8,8 +8,13 @@ function [ similar_case,best_matches,best_percent ] = ...
     new_aus = new_case.active_aus(:);
     best_matches = 0;
     best_percent = 0;
-    for i = 1:size(trained_cbr,1)
-        current_aus = trained_cbr{i}.active_aus(:);
+    index = size(new_aus,1);
+    if index > 7
+        index = 7;
+    end
+    best_index = index;
+    for i = 1:size(trained_cbr{index},1)
+        current_aus = trained_cbr{index}(i).active_aus(:);
         matches = size(find(ismember(current_aus,new_aus)),1);
         pc = matches / size(current_aus,1);
         pc2 = matches / size(new_aus,1);
@@ -20,17 +25,26 @@ function [ similar_case,best_matches,best_percent ] = ...
            best_case = i;
            % Skip to the end if percentage cannot be beaten
            if (percentage == 1)
-              i = size(trained_cbr,1) + 1;
+              similar_case = trained_cbr{index}(best_case);
+              return
            end
         end
     end
-    if (best_percent < 0.5)
-       disp('Guessing')
-       similar_case.label = 5;
-       similar_case.active_aus = new_case.active_aus;
-    else
-       similar_case = trained_cbr{best_case};
+    if (best_percent < 0.7)
+       for try_index = 1:7
+          if try_index == index
+              continue
+          end
+          [try_case,try_percent] = ...
+              CBR_retrieve_from_branch(trained_cbr{try_index},new_case);
+          if (try_percent > best_percent)
+             best_index = try_index;
+             best_case = try_case;
+             best_percent = try_percent;
+          end
+       end
     end
+    similar_case = trained_cbr{best_index}(best_case);
 
 end
 
