@@ -6,7 +6,6 @@ function [ avg_f1 ] = CBR_main( )
 	[examples, targets]  = loaddata('cleandata_students.txt');
     fclose('all');
     results = zeros(size(targets));
-    match_stats = cell(size(targets,1),1); 
     
     % Do 10 fold cross evaluation...
     folds = 10;
@@ -48,27 +47,13 @@ function [ avg_f1 ] = CBR_main( )
         output_targets(current_num:(end_fold - 1)) = test_targets;
         index = 1;
         for j = current_num:(end_fold - 1)
-           results(j) = fold_res{index}.label;
-           match_stats{j}.label = fold_res{index}.label;
-           match_stats{j}.matches = fold_res{index}.matches;
-           match_stats{j}.percentage = fold_res{index}.percentage;
-           match_stats{j}.result = test_targets(index);
+           results(j) = fold_res(index);
            index = index + 1;
         end
-        %results(current_num:(end_fold - 1)) = fold_res;
         current_num = end_fold;
         
     end
     
-%    for i = 1:size(match_stats,1)
-%        if ~(match_stats{i}.label == match_stats{i}.result)
-%            fprintf('PC: %f ',match_stats{i}.matches)
-%            fprintf('PC2: %f, correct result is %d ', ...
-%                match_stats{i}.percentage, ...
-%                match_stats{i}.result)
-%            fprintf('Predicted: %d\n', match_stats{i}.label)
-%        end
-%    end
     disp('CBR System Results:')
     [~,~,avg_f1] = evaluate_results(results,output_targets);
 
