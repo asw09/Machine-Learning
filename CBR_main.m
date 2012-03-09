@@ -4,6 +4,7 @@ function [ avg_f1 ] = CBR_main( )
 
     % Loads and transforms the examples from cleandata_students.txt
 	[examples, targets]  = loaddata('cleandata_students.txt');
+    %[examples, targets]  = loaddata('noisydata_students.txt');
     fclose('all');
     results = zeros(size(targets));
     
@@ -44,12 +45,11 @@ function [ avg_f1 ] = CBR_main( )
         fold_res = testCBR(trained_cbr,test_set);
         
         % Add the results to the result vector
-        output_targets(current_num:(end_fold - 1)) = test_targets;
-        index = 1;
-        for j = current_num:(end_fold - 1)
-           results(j) = fold_res(index);
-           index = index + 1;
-        end
+        output_targets(current_num:(current_num + length(test_targets) - 1))...
+            = test_targets;
+        results(current_num:(current_num + length(fold_res) - 1)) = fold_res;
+        % Uncomment to display results for each fold
+        %evaluate_results(fold_res,test_targets);
         current_num = end_fold;
         
     end

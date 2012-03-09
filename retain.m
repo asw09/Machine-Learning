@@ -14,15 +14,20 @@ function [ trained_cbr ] = retain( trained_cbr,solved_case,training )
     end
     % Search all cases on that branch to see if the new case matches any
     branch = trained_cbr{index};
-    for i = 1:size(branch,1)
+    branch_length = size(branch,1);
+    for i = 1:branch_length
         current_aus = branch(i).active_aus(:);
         solved_aus = solved_case.active_aus(:); 
         if (isequal(current_aus,solved_aus))
-            if ~(solved_case.label == branch(i).label) && training
-               % If this occurs during training, something has gone wrong
-               disp('Mismatch in training - example doubly classified:') 
-               disp(solved_case.label)
-               disp(trained_cbr{i}.label)
+            if ~(solved_case.label == branch(i).label)
+               % Lower its typicality
+               trained_cbr{index}(i).typicality = ...
+                    branch(i).typicality - 1;
+               % If it now has 0 typicality, remove it from the case base
+               if (trained_cbr{index}(i).typicality < 1)
+                    trained_cbr{index}(i) = [];
+                    break
+               end
             elseif solved_case.label == branch(i).label
                 % Increase the 'typicality' of the matching case
                 trained_cbr{index}(i).typicality = ...
