@@ -19,7 +19,7 @@ function [ similar_case ] = ...
     if index > 7
         index = 7;
     end
-    % Searc hall cases o the chosen branch
+    % Search all cases on the chosen branch
     for i = 1:size(trained_cbr{index},1)
         current_aus = trained_cbr{index}(i).active_aus(:);
         matches = size(find(ismember(current_aus,new_aus)),1);

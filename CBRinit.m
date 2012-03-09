@@ -3,8 +3,9 @@ function [ trained_cbr ] = CBRinit( examples,targets )
 
     trained_cbr = cell(7,1);
     for i = 1:size(examples,1)
+        % Add all training examples to the system
         new_case = CBR_get_case(examples(i,:),targets(i));
-        trained_cbr = retain(trained_cbr,new_case,1);
+        trained_cbr = retain(trained_cbr,new_case);
     end
     
     % Sort the trained CBR system branches by typicality of cases

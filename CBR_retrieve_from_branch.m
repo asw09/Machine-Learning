@@ -1,7 +1,8 @@
 function [ k_neighbours ] = ...
     CBR_retrieve_from_branch( trained_cbr_branch,new_case,k_neighbours )
 % CBR_RETRIEVE_FROM_BRANCH - retrieves a case from a branch of a 
-%                            trained CBR system
+%                            trained CBR system - works exactly like the
+%                            code in CBR_retrieve_match_pc
 
     new_aus = new_case.active_aus(:);
     best_percent = 0;

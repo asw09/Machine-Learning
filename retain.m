@@ -1,9 +1,8 @@
-function [ trained_cbr ] = retain( trained_cbr,solved_case,training )
+function [ trained_cbr ] = retain( trained_cbr,solved_case )
 % RETAIN - adds a solved case to the existing CBR system
 %
 %IN:  trained_cbr: a CBR system
 %     solved_case: the new case to (potentially) add
-%     training: is the CBR still recieving training examples?
 %OUT: updated_cbr: CBR system containing the new example
 
     found_same_example = 0;

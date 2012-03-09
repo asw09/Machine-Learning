@@ -5,11 +5,15 @@ function [ similar_case ] = CBR_retrieve_matches( trained_cbr,new_case )
 
     new_aus = new_case.active_aus(:);
     best_matches = 0;
+    best_typicality = 0;
     for i = 1:size(trained_cbr,1)
         current_aus = trained_cbr{i}.active_aus(:);
+        typicality = trained_cbr{i}.typicality;
         matches = size(find(ismember(current_aus,new_aus)),1);
-        if matches > best_matches
+        if matches > best_matches || (matches == best_matches && ...
+                typicality > best_typicality)
            best_matches = matches;
+           best_typicality = typicality;
            best_case = i;
         end
     end

@@ -45,7 +45,7 @@ function [ avg_f1 ] = CBR_main( )
         fold_res = testCBR(trained_cbr,test_set);
         
         % Add the results to the result vector
-        output_targets(current_num:(current_num + length(test_targets) - 1))...
+   output_targets(current_num:(current_num + length(test_targets) - 1))...
             = test_targets;
         results(current_num:(current_num + length(fold_res) - 1)) = fold_res;
         % Uncomment to display results for each fold
