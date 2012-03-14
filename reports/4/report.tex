@@ -92,6 +92,50 @@ The results of ANOVA, multiple comparison and t-tests can be seen below:
  20 paired t-tests would incorrectly identify a difference, so one error could likely be expected when 18 tests were performed.\\
   
 \newpage
+\section{ANOVA Test Results (Noisy Data)}
+
+The results of ANOVA, multiple comparison and t-tests can be seen below:
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+    {\bf Comparison} & {\bf ANOVA p-value} & {\bf Multiple Comparison [95\% c.i.]} & {\bf T-Test (H value)} \\
+    \hline
+    \multicolumn{4}{|c|}{Anger} \\ \hline
+	DT vs. NN 	& 			& similar [-0.3905,0.2171] 	& 0 \\
+	NN vs. CBR 	& 0.7620 	& similar [-0.2371,0.3705]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.3238,-0.2838] & 0 \\
+	\hline
+    \multicolumn{4}{|c|}{Disgust} \\ \hline
+	DT vs. NN 	& 			& similar [0.0,0.0]	& 0 \\
+	NN vs. CBR 	& -		 	& similar [0.0,0.0]	& 0 \\
+	DT vs. CBR 	& 			& similar [0.0,0.0]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Fear} \\ \hline
+	DT vs. NN 	& 			& similar [-0.4222,0.1840]	& 0 \\
+	NN vs. CBR 	& 0.6420	& similar [-0.2556,0.3556]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.3722,0.2390]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Happiness} \\ \hline
+	DT vs. NN 	& 			& similar [-0.0256,0.0756]	& 0 \\
+	NN vs. CBR 	& 0.3811 	& similar [-0.0250,0.0256]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.0506,0.0506]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Sadness} \\ \hline
+	DT vs. NN 	& 			& similar [-0.5256,0.1656]	& 0 \\
+	NN vs. CBR 	& 0.4438 	& similar [-0.2656,0.4256]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.1000,0.2456]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Surprise} \\ \hline
+	DT vs. NN 	& 			& similar [-0.1287,0.0087]	& 0 \\
+	NN vs. CBR 	& 0.0290 	& similar [-0.0830,0.0544]	& 0 \\
+	DT vs. CBR 	& 			& different [-0.1430,-0.0056]	& 1 \\
+	\hline
+  \end{tabular}\\
+ \end{center}
+ (DT = Decision Trees, NN = Neural Networks, CBR = Case-Based Reasoning)\\
+ 
+\newpage 
 \section{Appendix}
 
 $F_1$ results per fold from 10-fold cross-validation on clean data:\\
@@ -146,5 +190,58 @@ $F_1$ results per fold from 10-fold cross-validation on clean data:\\
 	\hline
   \end{tabular}\\
   \end{center}
+
+$F_1$ results per fold from 10-fold cross-validation on noisy data:\\
+  
+{\bf Decision Trees}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    \hline
+    Anger & 0.8 & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 &0.0\\
+Disgust   & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Fear & 1.0 & 1.0 & 1.0 &0.0& 0.667 & 0.667 & 0.8 & 1.0 & 1.0 & 1.0 \\
+Happiness & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Sadness & 0.667 & 1.0 & 1.0 &0.0& 1.0 &0.0& 1.0 & 1.0 & 1.0 & 1.0 \\
+Surprise & 1.0 & 1.0 & 1.0 & 0.857 & 0.8 & 1.0 & 0.8 & 1.0 & 1.0 & 0.8 \\
+	\hline
+  \end{tabular}\\
+  \end{center} 
+  
+ {\bf Neural Network}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    \hline
+    Ang & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Fear & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.8 & 0.5 & 1.0 \\
+Happiness & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.75 & 1.0 \\
+Sadness & 1.0 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 \\
+Surprise & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.857 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	\hline
+  \end{tabular}\\
+  \end{center} 
+  
+ {\bf Case-Based Reasoning}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    \hline
+    Ang & 1.0 & 1.0 & 1.0 & 0.667 &0.0& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Fear 	&0.0& 1.0 & 1.0 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Happiness & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Sadness & 0.667 & 1.0 & 1.0 &0.0& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+Surprise & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	\hline
+  \end{tabular}\\
+  \end{center} 
  
 \end{document}
