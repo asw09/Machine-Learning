@@ -1,0 +1,150 @@
+\documentclass[a4paper]{article}
+\usepackage{fullpage, titling, amsmath, footnote, listings, graphicx, subfig, lscape}
+\makesavenoteenv{tabular}
+\setlength{\droptitle}{-50pt}
+
+\title{Machine Learning Assignment 5: ANOVA Test}
+
+\author{Group 31 \\ Andrew West}
+
+\begin{document}
+\maketitle
+
+\section{General Results (Noisy Data)}
+
+Results of testing the various algorithms on noisy data, when trained on clean data, were as follows:\\
+
+\begin{center}
+  \begin{tabular}{c|cccccc|c}
+    Algorithm & Anger & Disgust & Fear & Happiness & Sadness & Surprise & Average $F_1$\\
+    \hline
+    Decision Trees 	& 0.333 & 0.919 & 0.727 & 0.950 & 0.667 & 0.952 & 0.7581 \\
+	ANN 			& 0.875 & 0.971 & 0.914 & 1.000	& 0.889 & 1.000 & 0.9416 \\
+	CBR System 		& 0.424 & 0.000 & 0.882 & 1.000	& 0.889 & 0.952 & 0.6913 \\
+  \end{tabular}\\
+  \end{center}
+  
+From these results, it is possible to say that Neural Networks appear to be the best learning algorithm to use. This can
+been seen by comparison of the average $F_1$ measures for each algorithm. As these results were produced by training on
+the entire clean data set and tested on the entire noisy set, the values for each measure for the ANN system and the
+Case-Based Reasoning system are deterministic (i.e. they will always produce the same average $F_1$ values), so if this
+experiment were run an arbitrary number of times the means of the distributions of average $F_1$ would be 0.9416 and
+0.6913 respectively - the ANN system is clearly better suited to this particular task than the CBR system. Comparison
+with the Decision Tree algorithm is slightly more difficult as it produces slighlty different results each time it is run.
+However, by repeating this experiment 50 times and performing a t-test on the resulting vectors of average $F_1$ values,
+it was discovered that the two distributions had different means (at the 95\% significance level), with the ANN mean being
+higher. Although we cannot say that the ANN learning algorithm is the best learning algorithm in general, if it is assumed
+that the clean and noisy datasets provided were representative of real data then we can at least say that the ANN algorithm
+is best suited to the task of classifying noisy data when trained on clean data.\\
+
+\newpage
+\section{ANOVA Test Results (Clean Data)}
+
+The results of ANOVA, multiple comparison and t-tests can be seen below:
+
+\begin{center}
+  \begin{tabular}{|c|c|c|c|}
+  \hline
+    {\bf Comparison} & {\bf ANOVA p-value} & {\bf Multiple Comparison [95\% c.i.]} & {\bf T-Test (H value)} \\
+    \hline
+    \multicolumn{4}{|c|}{Anger} \\ \hline
+	DT vs. NN 	& 			& similar [-0.5518,0.1058] 	& 0 \\
+	NN vs. CBR 	& 0.0526 	& similar [-0.4399,0.2177]	& 0 \\
+	DT vs. CBR 	& 			& different [-0.6629,-0.0053] & 1 \\
+	\hline
+    \multicolumn{4}{|c|}{Disgust} \\ \hline
+	DT vs. NN 	& 			& similar [-0.0585,0.0699]	& 0 \\
+	NN vs. CBR 	& 0.9682 	& similar [-0.0642,0.0642]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.0585,0.0699]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Fear} \\ \hline
+	DT vs. NN 	& 			& similar [-0.5899,0.3219]	& 0 \\
+	NN vs. CBR 	& 0.5648 	& similar [-0.5159,0.3959]  & 0 \\
+	DT vs. CBR 	& 			& similar [-0.6499,0.2619]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Happiness} \\ \hline
+	DT vs. NN 	& 			& similar [-0.1793,0.0057]	& 0 \\
+	NN vs. CBR 	& 0.0408 	& similar [-0.0925,0.0925]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.1793,0.0057]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Sadness} \\ \hline
+	DT vs. NN 	& 			& similar [-0.4147,0.1483]	& 0 \\
+	NN vs. CBR 	& 0.1014 	& similar [-0.4017,0.1613]	& 1 \\
+	DT vs. CBR 	& 			& similar [-0.5349,0.0281]	& 0 \\
+	\hline
+	\multicolumn{4}{|c|}{Surprise} \\ \hline
+	DT vs. NN 	& 			& similar [-0.3220,0.0820]	& 0 \\
+	NN vs. CBR 	& 0.2531 	& similar [-0.2020,0.2020]	& 0 \\
+	DT vs. CBR 	& 			& similar [-0.3220,0.0820]	& 0 \\
+	\hline
+  \end{tabular}\\
+ \end{center}
+ (DT = Decision Trees, NN = Neural Networks, CBR = Case-Based Reasoning)\\
+ 
+ Little of interest can be gained from these results, as all algorithms performed well on clean data. A difference was found
+ between classifications of `Anger' made by the Decision Tree algorithm and the Case-Based system by the multiple comparison
+ test, explaining the low ANOVA value for that emotion, and the t-test between those two algorithms confirms this difference.
+ In most other cases, both the ANOVA/Multiple Comparison tests and the t-tests were in agreement and no differences were found
+ between the algorithms classification scores. Despite having a very low ANOVA score, no differences could be found by either
+ of the follow-up tests between the average $F_1$ values for `Happiness'. The only case in which the tests produced different
+ results was the classification of `Sadness' by Neural Networks and the Case-Based system, although this could be a type 1 error
+ introduced by the number of t-tests performed - as tests were performed with an alpha value of 0.05, approximately one in every
+ 20 paired t-tests would incorrectly identify a difference, so one error could likely be expected when 18 tests were performed.\\
+  
+\newpage
+\section{Appendix}
+
+$F_1$ results per fold from 10-fold cross-validation on clean data:\\
+
+{\bf Decision Trees}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+    \hline
+    Anger 	& 0.333 & 0.8 & 0.667 & 0 & 0.667 & 1.0 & 1.0 & 1.0 & 0.0 & 1.0 \\
+	Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.857 & 1.0 & 1.0 & 1.0 \\
+	Fear 	& 0.667 & 1.0 & 0.0 & 0.0 & 1.0 & 1.0 & 1.0 & 0.0 & 1.0 & 1.0 \\
+	Happiness 	& 0.667 & 1.0 & 0.667 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Sadness 	& 0.0 & 0.8 & 1.0 & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.667 & 1.0 \\
+	Surprise 	& 0.0 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	\hline
+  \end{tabular}\\
+  \end{center}
+  
+ {\bf Neural Network}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+    \hline
+    Anger 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.8 & 0.889 & 0.0 & 1.0 \\
+	Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Fear 	& 1.0 & 1.0 & 1.0 & 1.0 & 0.0 & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Happiness 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Sadness 	& 1.0 & 1.0 & 1.0 & 1.0 & 0.8 & 0.667 & 0.667 & 0.667 & 1.0 & 1.0 \\
+	Surprise 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	\hline
+  \end{tabular}\\
+  \end{center}
+  
+  {\bf Case-Based Reasoning}\\
+
+\begin{center}
+  \begin{tabular}{|c|cccccccccc|}
+  \hline
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
+    \hline
+    Anger 	& 1.0 & 1.0 & 1.0 & 1.0 & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Disgust & 0.8 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Fear 	& 0.667 & 1.0 & 1.0 & 1.0 & 0.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Happiness 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Sadness 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	Surprise 	& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
+	\hline
+  \end{tabular}\\
+  \end{center}
+ 
+\end{document}
