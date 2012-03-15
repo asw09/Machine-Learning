@@ -23,6 +23,7 @@ Results of testing the various algorithms on noisy data, when trained on clean d
 	CBR System 		& 0.424 & 0.000 & 0.882 & 1.000	& 0.889 & 0.952 & 0.6913 \\
   \end{tabular}\\
   \end{center}
+  (For these and all subsequent ANN results, the single 6-output net was used)\\
   
 From these results, it is possible to say that Neural Networks appear to be the best learning algorithm to use. This can
 been seen by comparison of the average $F_1$ measures for each algorithm. As these results were produced by training on
@@ -135,6 +136,50 @@ The results of ANOVA, multiple comparison and t-tests can be seen below:
  \end{center}
  (DT = Decision Trees, NN = Neural Networks, CBR = Case-Based Reasoning)\\
  
+ For these results, all t-tests and multiple comparison tests agree in all cases. The only conclusion that can reliably be drawn from
+ this analysis is that the Case-Based Reasoning system is very likely better at classifying surprise than the Decision Tree algorithm
+ when trained and tested on noisy data. It should be noted that all three algorithms performed flawlessly when classifying Disgust,
+ each achieving perfect scores for $F_1$ on every fold, so no further analysis was possible (or necessary).\\
+ 
+\section{Additional Commentary}
+
+% Provide comments as to why some of the examined algorithms performed better than the others.
+
+As evidenced in the first section of this report, the `Neural Network' learning algorithm performed best when trained on clean examples
+and subsequently tested on noisy data. This is perhaps explainable by the increased complexity and optimisation of the Neural Network
+algorith used when compared with the others. For the Decision Tree and Case-Based reasoning tasks, a working implementation was the main goal
+and any optimisation occurred after this was complete and the algorithms were fully tested for correctness. Conversely, the provided Neural
+Network Toolbox drastically reduced the complexity of implementing the ANN system and allowed much more time for all parameters of the algorithm
+to be optimised to produce better results. Another issue to consider is that of overfitting - likely to have caused problems for the systems when
+they were trained with data which was noticable different from the data they would later be tested on. The Neural Network Toolbox provides tools
+to mitigate the effects of overfitting, which are discussed in more detail in the second report, and which will have reduced the effects of
+training with clean data and being tested on noisy data. Methods of reducing overfitting were investigated for the other algorithms (for example,
+pruning for the Decision Trees) but these were not implemented in the final versions of these systems, meaning that their results may have
+suffered because of overfitting to the training data.\\
+
+% Suppose that we want to add some new classes of new emotions to the existing dataset. 
+% Which of the examined algorithms are more suitable for incorporating the new classes 
+% in terms of extra engineering effort? Which algorithms need to undergo radical changes 
+% in order to include new classes?
+
+The complexity of the Neural Network algorithm does, however, impact its expandability. If a new emotion were to be added to the list of
+those to be classified, for example, the feeling of being surrounded by incompetence and apathy and being forced to complete a four-man project
+alone, several aspects of the Neural Network algorithm would need to be altered to take account of the new problem domain. If the six single-output
+networks were to be used, extra code would need to be added to generate this new network and new code would need to be added to take account of
+this new emotion at the recombination stage when the most applicable label is chosen for an emotion (in `combine\_probability.m').
+Even if the single 6-output network was used new code would be necessary to determine the most likely result of a query from a range of
+probabilities returned (in the function `six\_output\_combine.m'). In addition, in both cases it is almost certain that the optimised parameters
+found in task 2 would no longer produce the best results and these would have to be re-investigated. The Decision Tree algorithm would be
+similarly affected by the addition of a new emotion as a tree is generated for each possible emotion and the results later recombined - a new tree
+would be needed and the recombination code (in `testTrees.m' and `combine\_results.m') would require some changes. The Case-Based Reasoning system
+lies at the opposite end of this complexity scale and would require almost no changes to adapt to a new emotion as it was designed to be expandable.
+In fact, if an existing CBR system were retrained with examples which contained a new emotion label it would immediately be able to classify novel
+examples with that label with oly one minor change to the codebase - a single {\bf for} loop in the method `CBR_retrieve_match_pc.m' would need
+to have it's number of iterations increased by one for each new emotion. It should be noted that certain helper functions (`remap_labels.m' etc.)
+and all analysis code (`confusion_matrix.m' etc) would need to be updated, but these are common to all three algorithms and are not required
+for the algorithms to function, so they can be ignored when considering expandability.
+ 
+ 
 \newpage 
 \section{Appendix}
 
@@ -198,7 +243,7 @@ $F_1$ results per fold from 10-fold cross-validation on noisy data:\\
 \begin{center}
   \begin{tabular}{|c|cccccccccc|}
   \hline
-    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
     \hline
     Anger & 0.8 & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 &0.0\\
 Disgust   & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
@@ -215,7 +260,7 @@ Surprise & 1.0 & 1.0 & 1.0 & 0.857 & 0.8 & 1.0 & 0.8 & 1.0 & 1.0 & 0.8 \\
 \begin{center}
   \begin{tabular}{|c|cccccccccc|}
   \hline
-    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
     \hline
     Ang & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 0.667 & 1.0 & 1.0 & 1.0 & 1.0 \\
 Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
@@ -232,7 +277,7 @@ Surprise & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 0.857 & 1.0 & 1.0 & 1.0 & 1.0 \\
 \begin{center}
   \begin{tabular}{|c|cccccccccc|}
   \hline
-    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 1.00 \\
+    Emotion & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
     \hline
     Ang & 1.0 & 1.0 & 1.0 & 0.667 &0.0& 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
 Disgust & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 & 1.0 \\
