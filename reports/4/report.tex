@@ -144,6 +144,7 @@ The results of ANOVA, multiple comparison and t-tests can be seen below:
 \section{Additional Commentary}
 
 % Provide comments as to why some of the examined algorithms performed better than the others.
+{\bf Algorithm Performance}\\
 
 As evidenced in the first section of this report, the `Neural Network' learning algorithm performed best when trained on clean examples
 and subsequently tested on noisy data. This is perhaps explainable by the increased complexity and optimisation of the Neural Network
@@ -161,6 +162,7 @@ suffered because of overfitting to the training data.\\
 % Which of the examined algorithms are more suitable for incorporating the new classes 
 % in terms of extra engineering effort? Which algorithms need to undergo radical changes 
 % in order to include new classes?
+{\bf Expandability}\\
 
 The complexity of the Neural Network algorithm does, however, impact its expandability. If a new emotion were to be added to the list of
 those to be classified, for example, the feeling of being surrounded by incompetence and apathy and being forced to complete a four-man project
@@ -174,11 +176,29 @@ similarly affected by the addition of a new emotion as a tree is generated for e
 would be needed and the recombination code (in `testTrees.m' and `combine\_results.m') would require some changes. The Case-Based Reasoning system
 lies at the opposite end of this complexity scale and would require almost no changes to adapt to a new emotion as it was designed to be expandable.
 In fact, if an existing CBR system were retrained with examples which contained a new emotion label it would immediately be able to classify novel
-examples with that label with oly one minor change to the codebase - a single {\bf for} loop in the method `CBR_retrieve_match_pc.m' would need
-to have it's number of iterations increased by one for each new emotion. It should be noted that certain helper functions (`remap_labels.m' etc.)
-and all analysis code (`confusion_matrix.m' etc) would need to be updated, but these are common to all three algorithms and are not required
-for the algorithms to function, so they can be ignored when considering expandability.
+examples with that label with oly one minor change to the codebase - a single {\bf for} loop in the method `CBR\_retrieve\_match\_pc.m' would need
+to have it's number of iterations increased by one for each new emotion. It should be noted that certain helper functions (`remap\_labels.m' etc.)
+and all analysis code (`confusion\_matrix.m' etc.) would need to be updated, but these are common to all three algorithms and are not required
+for the algorithms to function, so they can be ignored when considering expandability.\\
+
+% What assumptions do the t-test and ANOVA test make concerning the variances of the compared groups?
+% Can you think of other procedures in case some of these assumptions do not hold?
+{\bf Assumptions of ANVOA/T-Test}\\
  
+Both the  ANOVA and the t-test assume that the variances of the populations being compared are homogeneous. If this is not he case, and two groups
+(or more for ANOVA) have unequal variances, then the results of these tests cannot be relied upon and different procedures should be used
+to compare the groups. In the case of the t-test, it is possible to use modified versions of the formulae from the test to find t-values
+and their associated degrees of freedom which can then be used just like those calculated using the standard t-test.
+This is known as `Welch's t-test', and it relies on the use of the sample variances in the calculation of the t statistic and the degrees of
+freedom instead of the population variances, which are unknown. This will generate good results, but it should only be used if
+it is known that the groups have significantly different variances and the sample size is small, as the standard t-test is usually more accurate
+if this is not the case.
+ANOVA can similarly be modified to produce better results when the population variances are unequal. By applying a tranformation to the data
+before performing the ANOVA test (for example, taking logarithms of each value), it is sometimes possible to correct to inequality of variances
+among populations. This can also be used to `normalise' data which do not originally fit a normal distribution, as normally distribution
+of samples is another assumption of the ANOVA test. It should be noted, however, that this is usually only necessary if the sample sizes of the
+various groups to be used are unequal or if there are significant differences in the variances of the compared groups. If the groups are not normally
+distributed but do have equal variances, nonparametric tests such as the Kruskal-Wallis test can be used instead of ANOVA to compare them.
  
 \newpage 
 \section{Appendix}
